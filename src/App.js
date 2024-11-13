@@ -1,40 +1,73 @@
-import {CreateTitle} from "./CreateTitle";
-import {Todo} from './Todo.jsx'
-import './App.css';
+import { CreateTitle } from './CreateTitle'
+import { Todo } from './Todo.jsx'
+import { useReducer } from 'react'
 
-function App() {
-  return (
-      <div>
-          <CreateTitle/>
-            <Todo dayMonth={'31.05'} year={'2024'} description={'Cos tam cos tam cos tam'}/>
-
-
-
-          <div>
-              <div className="grid grid-cols-9 border-2 bg-yellow-50">
-                  <div className="flex flex-col border-r-2 justify-center items-center whitespace-normal col-span-2">
-                      <p className='font-light'> 31.05 </p>
-                      <p className='font-bold text-1xl'> 2024 </p>
-                  </div>
-                  <p className="flex justify-center border-r-2 items-center text-sm col-span-5 h-16 text-wrap"> Casdasd
-                      asdasdoadssd asdasda
-                      asda asdkasld </p>
-                  <div
-                      className=' flex justify-center items-center whitespace-normal bg-blue-500 col-span-1 border-2 rounded-lg text-white hover:bg-blue-400 transition-all active:scale-90'>
-                      <button>
-                          Done
-                      </button>
-                  </div>
-                  <div
-                      className='flex justify-center items-center whitespace-normal bg-red-500 col-span-1 border-2 rounded-lg text-white hover:bg-red-400 transition-all active:scale-90'>
-                      <button>
-                          Delete
-                      </button>
-                  </div>
-              </div>
-          </div>
-      </div>
-  );
+const ACTIONS = {
+    ADD_TODO: 'ADD_TODO',
+    TOGGLE_TODO: 'TOGGlE_TODO'
 }
 
-export default App;
+function reducer(state, action) {
+    switch (action.type) {
+        case ACTIONS.ADD_TODO:
+            const createdAt = new Date()
+            return {
+                ...state,
+                todos: [
+                    ...state.todos,
+                    {
+                        id: Date.now(),
+                        text: action.payload,
+                        completed: false,
+                        createdAt: createdAt
+                    }
+                ]
+            }
+        case ACTIONS.TOGGLE_TODO:
+            return {
+                ...state,
+                todos: state.todos.map(todo =>
+                    todo.id === action.payload ? { ...todo, completed: !todo.completed } : todo
+                )
+            }
+        default:
+            return state
+    }
+}
+
+
+function App() {
+    const [state, dispatch] = useReducer(reducer, { todos: [] })
+
+    const handleSubmit = (event, newTodo) => {
+        event.preventDefault()
+        if (newTodo.trim()) {
+            dispatch({ type: ACTIONS.ADD_TODO, payload: newTodo })
+        }
+    }
+
+    return (
+        <div>
+            <CreateTitle handleSubmit={handleSubmit} />
+            {state.todos.map(todo => {
+                const createdAt = new Date(todo.createdAt)
+                const dayMonth = createdAt.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit' })
+                const year = createdAt.getFullYear()
+
+                return (
+                    <Todo
+                        key={todo.id}
+                        id={todo.id}
+                        dayMonth={dayMonth}
+                        year={year}
+                        description={todo.text}
+                        completed={todo.completed}
+                        onToggle={() => dispatch({ type: ACTIONS.TOGGLE_TODO, payload: todo.id })}
+                    />
+                )
+            })}
+        </div>
+    )
+}
+
+export default App
