@@ -22,8 +22,8 @@ export function CreateTitle({ handleSubmit }) {
                     <input
                         className="h-9 rounded-l-md border-2 border-r-0 border-blue-200"
                         type="text"
-                        value={newTodo}                            // Kontrolowana wartość pola
-                        onChange={(e) => setNewTodo(e.target.value)} // Aktualizacja stanu
+                        value={newTodo}
+                        onChange={(e) => setNewTodo(e.target.value)}
                         placeholder="Your todo!"
                     />
                     <button
