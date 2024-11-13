@@ -4,9 +4,9 @@ export function CreateTitle({ handleSubmit }) {
     const [newTodo, setNewTodo] = useState('')
 
     const onSubmit = (e) => {
-        e.preventDefault()          // Zapobiega przeładowaniu strony po submicie
-        handleSubmit(e, newTodo)    // Przekazuje nową wartość `newTodo`
-        setNewTodo('')              // Resetuje pole tekstowe po dodaniu zadania
+        e.preventDefault()
+        handleSubmit(e, newTodo)
+        setNewTodo('')
     }
 
     return (
