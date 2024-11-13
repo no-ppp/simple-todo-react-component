@@ -12,7 +12,7 @@ function App() {
                   <form className='pt-3 flex justify-center items-center'>
                       <input className='border-blue-200 border-2 border-r-0 h-9 rounded-l-md' type="text"
                              placeholder="Title"/>
-                      <button className='border-blue-200 text-white border-2 h-9 rounded-r-md p-1 bg-blue-400'
+                      <button className='border-blue-200 text-white border-2 h-9 rounded-r-md p-1 bg-blue-400 hover:bg-blue-300 transition-all active:scale-50'
                               type="submit">Create
                       </button>
                   </form>
