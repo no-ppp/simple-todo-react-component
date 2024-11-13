@@ -4,7 +4,8 @@ import { useReducer } from 'react'
 
 const ACTIONS = {
     ADD_TODO: 'ADD_TODO',
-    TOGGLE_TODO: 'TOGGlE_TODO'
+    TOGGLE_TODO: 'TOGGLE_TODO',
+    DELETE: 'DELETE'
 }
 
 function reducer(state, action) {
@@ -29,6 +30,12 @@ function reducer(state, action) {
                 todos: state.todos.map(todo =>
                     todo.id === action.payload ? { ...todo, completed: !todo.completed } : todo
                 )
+            }
+        case ACTIONS.DELETE:
+            return {
+                ...state,
+                todos: state.todos.filter(todo =>
+                    todo.id !== action.payload)
             }
         default:
             return state
@@ -63,6 +70,7 @@ function App() {
                         description={todo.text}
                         completed={todo.completed}
                         onToggle={() => dispatch({ type: ACTIONS.TOGGLE_TODO, payload: todo.id })}
+                        onDelete={() => dispatch({ type: ACTIONS.DELETE, payload: todo.id })}
                     />
                 )
             })}

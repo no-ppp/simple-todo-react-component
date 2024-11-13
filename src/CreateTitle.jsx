@@ -1,5 +1,13 @@
+import { useState } from 'react'
+
 export function CreateTitle({ handleSubmit }) {
-    let newTodo = ''
+    const [newTodo, setNewTodo] = useState('')
+
+    const onSubmit = (e) => {
+        e.preventDefault()          // Zapobiega przeładowaniu strony po submicie
+        handleSubmit(e, newTodo)    // Przekazuje nową wartość `newTodo`
+        setNewTodo('')              // Resetuje pole tekstowe po dodaniu zadania
+    }
 
     return (
         <div className="bg-blue-500">
@@ -9,12 +17,13 @@ export function CreateTitle({ handleSubmit }) {
             <div className="flex items-center justify-center pb-5 font-sans font-medium">
                 <form
                     className="flex items-center justify-center pt-3"
-                    onSubmit={(e) => handleSubmit(e, newTodo)}
+                    onSubmit={onSubmit}
                 >
                     <input
                         className="h-9 rounded-l-md border-2 border-r-0 border-blue-200"
                         type="text"
-                        onChange={(e) => (newTodo = e.target.value)} // Teraz tekst jest przechowywany w zmiennej
+                        value={newTodo}                            // Kontrolowana wartość pola
+                        onChange={(e) => setNewTodo(e.target.value)} // Aktualizacja stanu
                         placeholder="Your todo!"
                     />
                     <button
@@ -28,3 +37,4 @@ export function CreateTitle({ handleSubmit }) {
         </div>
     )
 }
+
